@@ -19,33 +19,31 @@ namespace Assignment_3_Ticket_Hub.Controllers
         [HttpPost]
         public async Task<IActionResult> PurchaseTicket([FromBody] TicketPurchase purchase)
         {
-            // Validate the incoming payload.
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            // Retrieve the Azure Storage connection string from User Secrets.
             string? connectionString = _configuration["AzureStorageConnectionString"];
             if (string.IsNullOrEmpty(connectionString))
             {
                 return BadRequest("Connection string is not configured properly.");
             }
 
-            // Create a QueueClient for the specified queue.
-            QueueClient queueClient = new QueueClient(connectionString, QueueName);
-
-            // Ensure that the queue exists.
-            await queueClient.CreateIfNotExistsAsync();
-
-            // Serialize the purchase object to JSON.
-            string message = JsonSerializer.Serialize(purchase);
-
-            // Send the message to the Azure Storage Queue.
-            await queueClient.SendMessageAsync(message);
-
-            // Return a success response.
-            return Ok("Ticket purchase submitted successfully.");
+            try
+            {
+                QueueClient queueClient = new QueueClient(connectionString, QueueName);
+                await queueClient.CreateIfNotExistsAsync();
+                string message = JsonSerializer.Serialize(purchase);
+                await queueClient.SendMessageAsync(message);
+                return Ok("Ticket purchase submitted successfully.");
+            }
+            catch (Exception ex)
+            {
+                // For debugging only! In production, log this error instead.
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
+
     }
 }
