@@ -19,7 +19,7 @@ namespace Assignment_3_Ticket_Hub
         public string Phone { get; set; }
 
         [Required(ErrorMessage = "Quantity is required.")]
-        [Range(1, int.MaxValue, ErrorMessage = "Quantity must be at least 1.")]
+        [Range(1, 8, ErrorMessage = "Quantity must be at least 1.")]
         public int Quantity { get; set; }
 
         [Required(ErrorMessage = "Credit card number is required.")]
