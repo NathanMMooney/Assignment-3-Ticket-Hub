@@ -3,7 +3,7 @@ name: Build and Deploy ASP.NET API to Azure Web App
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   build-and-deploy:
