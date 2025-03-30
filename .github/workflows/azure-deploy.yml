@@ -1,0 +1,41 @@
+name: Build and Deploy ASP.NET API to Azure Web App
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Setup .NET Core (adjust the version to your target framework)
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: '8.0'  # Replace with your version if different
+
+      # Restore dependencies
+      - name: Restore dependencies
+        run: dotnet restore
+
+      # Build the project in Release mode
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      # Publish the project to a folder
+      - name: Publish
+        run: dotnet publish --configuration Release --output ./publish --no-build
+
+      # Deploy to Azure Web App using the publish profile stored in GitHub Secrets
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: "YourAzureWebAppName"         # Replace with your Azure Web App name
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: ./publish
