@@ -9,43 +9,45 @@ namespace Assignment_3_Ticket_Hub
 
         [Required(ErrorMessage = "Email is required.")]
         [EmailAddress(ErrorMessage = "Invalid email format.")]
-        public string Email { get; set; }
+        public required string Email { get; set; }
 
         [Required(ErrorMessage = "Name is required.")]
-        public string Name { get; set; }
+        public required string Name { get; set; }
 
         [Required(ErrorMessage = "Phone number is required.")]
         [Phone(ErrorMessage = "Invalid phone number.")]
-        public string Phone { get; set; }
+        public required string Phone { get; set; }
 
         [Required(ErrorMessage = "Quantity is required.")]
-        [Range(1, 8, ErrorMessage = "Quantity must be at least 1.")]
+        [Range(1, 8, ErrorMessage = "Quantity must be between 1 and 8.")]
         public int Quantity { get; set; }
 
         [Required(ErrorMessage = "Credit card number is required.")]
         [CreditCard(ErrorMessage = "Invalid credit card number.")]
-        public string CreditCard { get; set; }
+        public required string CreditCard { get; set; }
 
         [Required(ErrorMessage = "Expiration date is required.")]
-        public string Expiration { get; set; }
+        [RegularExpression(@"^(0[1-9]|1[0-2])\/\d{2}$", ErrorMessage = "Expiration date must be in MM/YY format.")]
+        public required string Expiration { get; set; }
 
         [Required(ErrorMessage = "Security code is required.")]
-        public string SecurityCode { get; set; }
+        [RegularExpression(@"^\d{3,4}$", ErrorMessage = "Security code must be 3 or 4 digits.")]
+        public required string SecurityCode { get; set; }
 
         [Required(ErrorMessage = "Address is required.")]
-        public string Address { get; set; }
+        public required string Address { get; set; }
 
         [Required(ErrorMessage = "City is required.")]
-        public string City { get; set; }
+        public required string City { get; set; }
 
         [Required(ErrorMessage = "Province is required.")]
-        public string Province { get; set; }
+        public required string Province { get; set; }
 
         [Required(ErrorMessage = "Postal code is required.")]
-        public string PostalCode { get; set; }
+        [RegularExpression(@"^[A-Za-z0-9\s\-]{3,10}$", ErrorMessage = "Postal code format is invalid.")]
+        public required string PostalCode { get; set; }
 
         [Required(ErrorMessage = "Country is required.")]
-        public string Country { get; set; }
-
+        public required string Country { get; set; }
     }
 }
